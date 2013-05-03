@@ -59,39 +59,19 @@ class Yourls
 		global $context, $scripturl, $txt;
 
 		$config_vars = array(
-			array('desc', 'faqmod_desc'),
-			array('check', 'faqmod_settings_enable', 'subtext' => $txt['faqmod_settings_enable_sub']),
-			array('int', 'faqmod_num_faqs', 'size' => 3, 'subtext' => $txt['faqmod_num_faqs_sub']),
-			array('check', 'faqmod_show_catlist', 'subtext' => $txt['faqmod_show_catlist_sub']),
-			array('int', 'faqmod_show_latest', 'size' => 3, 'subtext' => $txt['faqmod_show_latest_sub']),
-			array( 'select', 'faqmod_sort_method',
-				array(
-					'id' => $txt['faqmod_id'],
-					'title' => $txt['faqmod_title'],
-					'cat_id' => $txt['faqmod_byCat'],
-					'body' => $txt['faqmod_body'],
-				),
-				'subtext' => $txt['faqmod_sort_method_sub']
-			),
-			array( 'select', 'faqmod_menu_position',
-				array(
-					'home' => $txt['home'],
-					'help' => $txt['help'],
-					'search' => $txt['search'],
-					'login' => $txt['login'],
-					'register' => $txt['register']
-				),
-				'subtext' => $txt['faqmod_menu_position_sub']
-			),
-			array('check', 'faqmod_use_javascript', 'subtext' => $txt['faqmod_use_javascript_sub']),
-			array('check', 'faqmod_care', 'subtext' => $txt['faqmod_care_sub']),
+			array('desc', self::$name .'_settingsDesc'),
+			array('check', self::$name .'_settingsEnable', 'subtext' => $txt[self::$name .'_settingsEnable_sub']),
+			array('text', self::$name .'_settingsDomain', 'subtext' => $txt[self::$name .'_settingsDomain_sub']),
+			array('text', self::$name .'_settingsUser', 'subtext' => $txt[self::$name .'_settingsUser_sub']),
+			array('text', self::$name .'_settingsPass', 'subtext' => $txt[self::$name .'_settingsPass_sub']),
+			array('check', self::$name .'_settingsEnableBBC', 'subtext' => $txt[self::$name .'_settingsEnableBBC_sub']),
 		);
 
 		if ($return_config)
 			return $config_vars;
 
-		$context['post_url'] = $scripturl . '?action=admin;area=modsettings;save;sa=faq';
-		$context['settings_title'] = $txt['faqmod_title_main'];
+		$context['post_url'] = $scripturl . '?action=admin;area=modsettings;save;sa=yourls';
+		$context['settings_title'] = $txt[self::$name .'_admin_title'];
 
 		if (empty($config_vars))
 		{
@@ -106,7 +86,7 @@ class Yourls
 			checkSession();
 			$save_vars = $config_vars;
 			saveDBSettings($save_vars);
-			redirectexit('action=admin;area=modsettings;sa=faq');
+			redirectexit('action=admin;area=modsettings;sa=yourls');
 		}
 
 		prepareDBSettingContext($config_vars);
