@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>Suki:SMF-YOURLS</id>
+	<name>SMF-YOURLS Integration</name>
+	<version>1.0</version>
+	<type>modification</type>
+
+	<install for="2.0 - 2.0.99">
+		<readme parsebbc="true">readme.txt</readme>
+		<code>installHooks.php</code>
+		<require-dir name="Themes" destination="$boarddir">Theme and Language files</require-dir>
+		<require-dir name="Sources" destination="$boarddir">Source files</require-dir>
+		<redirect url="?action=admin;area=modsettings;sa=yourls"></redirect>
+	</install>
+
+	<uninstall for="2.0 - 2.0.99">
+		<code>uninstallHooks.php</code>
+		<remove-file name="$sourcedir/Yourls.php" />
+		<remove-file name="$languagedir/Yourls.english.php" />
+	</uninstall>
+
+</package-info>
