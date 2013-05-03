@@ -35,7 +35,7 @@ $hooks = array(
 	'integrate_pre_include' => '$sourcedir/Yourls.php',
 	'integrate_bbc_codes' => 'Yourls::bbcCode',
 	'integrate_bbc_buttons' => 'Yourls::bbcButton',
-	'integrate_general_mod_settings' => 'Yourls::settings',
+	'integrate_modify_modifications' => 'Yourls::settings',
 	'integrate_load_permissions' => 'Yourls::permissions',
 );
 

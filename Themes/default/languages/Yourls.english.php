@@ -28,3 +28,4 @@
 global $scripturl, $txt;
 
 $txt['Yourls_title_main'] = 'YOURLS';
+$txt['Yourls_admin_title'] = 'Yourls admin panel';

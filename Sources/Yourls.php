@@ -32,22 +32,18 @@ class Yourls
 {
 	protected $name = 'Yourls';
 
-	/**
-	 *
-	 *
-	 * @access public
-	 * @global string $sourcedir the path to the forum sources directory
-	 * @global array $smcFunc holds the SMF DB layer
-	 * @global array $modSettings global SMF settings
-	 * @return void
-	 */
 	public function __construct()
 	{
-		global $sourcedir, $smcFunc, $modSettings;
+	}
 
-		$this->_sourcedir = $sourcedir;
-		$this->_smcFunc = $smcFunc;
-		$this->_modSettings = $modSettings;
+	static function admin(&$areas)
+	{
+		global $txt;
+
+		if (!isset($txt['Yourls_title_main']))
+			loadLanguage(self::$name);
+
+		$areas['config']['areas']['modsettings']['subsections']['yourls'] = array($txt['Yourls_admin_title']);
 	}
 
 	/**
