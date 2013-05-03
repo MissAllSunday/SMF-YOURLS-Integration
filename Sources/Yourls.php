@@ -46,6 +46,72 @@ class Yourls
 		$areas['config']['areas']['modsettings']['subsections']['yourls'] = array($txt['Yourls_admin_title']);
 	}
 
+	static function settings(&$sub_actions)
+	{
+		global $context;
+
+		$sub_actions['yourls'] = 'Yourls::postSettings';
+		$context[$context['admin_menu_name']]['tab_data']['tabs']['yourls'] = array();
+	}
+
+	static function postSettings(&$return_config = false)
+	{
+		global $context, $scripturl, $txt;
+
+		$config_vars = array(
+			array('desc', 'faqmod_desc'),
+			array('check', 'faqmod_settings_enable', 'subtext' => $txt['faqmod_settings_enable_sub']),
+			array('int', 'faqmod_num_faqs', 'size' => 3, 'subtext' => $txt['faqmod_num_faqs_sub']),
+			array('check', 'faqmod_show_catlist', 'subtext' => $txt['faqmod_show_catlist_sub']),
+			array('int', 'faqmod_show_latest', 'size' => 3, 'subtext' => $txt['faqmod_show_latest_sub']),
+			array( 'select', 'faqmod_sort_method',
+				array(
+					'id' => $txt['faqmod_id'],
+					'title' => $txt['faqmod_title'],
+					'cat_id' => $txt['faqmod_byCat'],
+					'body' => $txt['faqmod_body'],
+				),
+				'subtext' => $txt['faqmod_sort_method_sub']
+			),
+			array( 'select', 'faqmod_menu_position',
+				array(
+					'home' => $txt['home'],
+					'help' => $txt['help'],
+					'search' => $txt['search'],
+					'login' => $txt['login'],
+					'register' => $txt['register']
+				),
+				'subtext' => $txt['faqmod_menu_position_sub']
+			),
+			array('check', 'faqmod_use_javascript', 'subtext' => $txt['faqmod_use_javascript_sub']),
+			array('check', 'faqmod_care', 'subtext' => $txt['faqmod_care_sub']),
+		);
+
+		if ($return_config)
+			return $config_vars;
+
+		$context['post_url'] = $scripturl . '?action=admin;area=modsettings;save;sa=faq';
+		$context['settings_title'] = $txt['faqmod_title_main'];
+
+		if (empty($config_vars))
+		{
+			$context['settings_save_dont_show'] = true;
+			$context['settings_message'] = '<div align="center">' . $txt['modification_no_misc_settings'] . '</div>';
+
+			return prepareDBSettingContext($config_vars);
+		}
+
+		if (isset($_GET['save']))
+		{
+			checkSession();
+			$save_vars = $config_vars;
+			saveDBSettings($save_vars);
+			redirectexit('action=admin;area=modsettings;sa=faq');
+		}
+
+		prepareDBSettingContext($config_vars);
+	}
+
 	/**
 	 * Tries to fetch the content of a given url
 	 *
