@@ -42,7 +42,7 @@ function Yourls_settings(&$sub_actions)
 {
 	global $context;
 
-	$sub_actions['yourls'] = 'Yourls::postSettings';
+	$sub_actions['yourls'] = 'Yourls_postSettings';
 	$context[$context['admin_menu_name']]['tab_data']['tabs']['yourls'] = array();
 }
 

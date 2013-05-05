@@ -35,8 +35,8 @@ $hooks = array(
 	'integrate_pre_include' => '$sourcedir/Yourls.php',
 	'integrate_bbc_codes' => 'Yourls::bbcCode',
 	'integrate_bbc_buttons' => 'Yourls::bbcButton',
-	'integrate_modify_modifications' => 'Yourls::settings',
-	'integrate_load_permissions' => 'Yourls::permissions',
+	'integrate_modify_modifications' => 'Yourls_settings',
+	'integrate_load_permissions' => 'Yourls_permissions',
 );
 
 foreach ($hooks as $hook => $function)
