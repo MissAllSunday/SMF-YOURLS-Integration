@@ -30,10 +30,36 @@ if (!defined('SMF'))
 
 class Yourls
 {
-	protected $name = 'Yourls';
+	public $name = 'Yourls';
+	protected $user = false;
+	protected $pass = false;
+	protected $domain = false;
 
 	public function __construct()
 	{
+		global $modSettings;
+
+		$parsed = array();
+
+		$this->_user = !empty($modSettings['Yourls_settingsUser']) ? $modSettings['Yourls_settingsUser'] : false;
+		$this->_pass = !empty($modSettings['Yourls_settingsPass']) ? $modSettings['Yourls_settingsPass'] : false;
+		$this->setDomain();
+
+	}
+
+	protected function setDomain()
+	{
+		global $modSettings;
+
+		$parsed = array();
+
+		if (empty($modSettings['Yourls_settingsDomain']))
+			$parsed = parse_url($modSettings['Yourls_settingsDomain']);
+
+		if (!empty($parsed) && is_array($parsed))
+			$this->_domain = rtrim(empty($parsed['scheme']) ? 'http://'. $modSettings['Yourls_settingsDomain'] : $modSettings['Yourls_settingsDomain']);
+
+		$this->_api_url = $this->_domain . '/yourls-api.php';
 	}
 
 	/**
@@ -43,7 +69,7 @@ class Yourls
 	 * @param string $url the url to call
 	 * @return mixed either the page requested or a boolean false
 	 */
-	protected function fetch_web_data($url)
+	protected function fetch_web_data($url = false)
 	{
 		/* Safety first! */
 		if (empty($url))
@@ -84,5 +110,9 @@ class Yourls
 			/* Send the result directly, we are gonna handle it on every case */
 			return fetch_web_data($url);
 		}
+	}
+
+	protected function init()
+	{
 	}
 }
