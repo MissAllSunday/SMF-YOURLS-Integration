@@ -40,11 +40,7 @@ class Yourls
 
 	public function __construct()
 	{
-		global $modSettings, $txt;
-
-		// Load the language strings
-		if (!isset($txt['Yourls_title_main']))
-			loadLanguage('Yourls');
+		global $modSettings;
 
 		$this->_user = !empty($modSettings['Yourls_settingsUser']) ? $modSettings['Yourls_settingsUser'] : false;
 		$this->_pass = !empty($modSettings['Yourls_settingsPass']) ? $modSettings['Yourls_settingsPass'] : false;
@@ -69,7 +65,21 @@ class Yourls
 
 		// Fill up an error
 		else
+			$this->errors[] = 'noValidDomain';
 
+	}
+
+	protected function handleErrors($action)
+	{
+		global $txt;
+
+		// No point going further...
+		if (empty($action))
+			return false;
+
+		// Load the language strings
+		if (!isset($txt['Yourls_title_main']))
+			loadLanguage('Yourls');
 	}
 
 	/**
