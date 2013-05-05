@@ -55,14 +55,14 @@ class Yourls
 
 		if (!empty($modSettings['Yourls_settingsDomain']))
 		{
-			$this->domain = rtrim(strpos($modSettings['Yourls_settingsDomain'], 'http://') !== 0 && strpos($modSettings['Yourls_settingsDomain'], 'https://') !== 0 ? 'http://'. $modSettings['Yourls_settingsDomain'] : $modSettings['Yourls_settingsDomain']);
+			$this->domain = trim(strpos($modSettings['Yourls_settingsDomain'], 'http://') !== 0 || strpos($modSettings['Yourls_settingsDomain'], 'https://') !== 0 ? $modSettings['Yourls_settingsDomain'] : 'http://'. $modSettings['Yourls_settingsDomain']);
 
 			$this->apiUrl = $this->domain . '/yourls-api.php';
 		}
 
 		// Fill up an error
 		else
-			$this->errors[] = 'noValidDomain';
+			$this->errors[] = 'emptyDomain';
 	}
 
 	protected function handleErrors($action)
@@ -129,6 +129,6 @@ class Yourls
 		$this->url = $url;
 		$this->fetch_web_data();
 
-		return $this->data;
+		return json_decode($this->data, true);
 	}
 }
