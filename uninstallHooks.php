@@ -32,10 +32,12 @@ elseif (!defined('SMF'))
 	exit('<b>Error:</b> Cannot install - please verify you put this in the same place as SMF\'s index.php.');
 
 $hooks = array(
+	'integrate_admin_include' => '$sourcedir/YourlsHooks.php',
 	'integrate_pre_include' => '$sourcedir/Yourls.php',
 	'integrate_bbc_codes' => 'Yourls::bbcCode',
 	'integrate_bbc_buttons' => 'Yourls::bbcButton',
 	'integrate_modify_modifications' => 'Yourls_settings',
+	'integrate_admin_areas' => 'Yourls_admin',
 	'integrate_load_permissions' => 'Yourls_permissions',
 );
 

@@ -33,7 +33,7 @@ function Yourls_admin(&$areas)
 	global $txt;
 
 	if (!isset($txt['Yourls_title_main']))
-		loadLanguage(self::$name);
+		loadLanguage('Yourls');
 
 	$areas['config']['areas']['modsettings']['subsections']['yourls'] = array($txt['Yourls_admin_title']);
 }
@@ -46,7 +46,7 @@ function Yourls_settings(&$sub_actions)
 	$context[$context['admin_menu_name']]['tab_data']['tabs']['yourls'] = array();
 }
 
-function Yourls_postSettings(&$return_config = false)
+function Yourls_postSettings($return_config = false)
 {
 	global $context, $scripturl, $txt;
 
