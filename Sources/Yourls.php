@@ -31,20 +31,24 @@ if (!defined('SMF'))
 class Yourls
 {
 	public $name = 'Yourls';
-	protected $user = false;
-	protected $pass = false;
-	protected $domain = false;
+	protected $_user = false;
+	protected $_pass = false;
+	public $domain = false;
+	public $data = array();
+	public $apiUrl = '';
+	public $errors = array();
 
 	public function __construct()
 	{
-		global $modSettings;
+		global $modSettings, $txt;
 
-		$parsed = array();
+		// Load the language strings
+		if (!isset($txt['Yourls_title_main']))
+			loadLanguage('Yourls');
 
 		$this->_user = !empty($modSettings['Yourls_settingsUser']) ? $modSettings['Yourls_settingsUser'] : false;
 		$this->_pass = !empty($modSettings['Yourls_settingsPass']) ? $modSettings['Yourls_settingsPass'] : false;
 		$this->setDomain();
-
 	}
 
 	protected function setDomain()
@@ -53,13 +57,19 @@ class Yourls
 
 		$parsed = array();
 
-		if (empty($modSettings['Yourls_settingsDomain']))
+		if (!empty($modSettings['Yourls_settingsDomain']))
+		{
 			$parsed = parse_url($modSettings['Yourls_settingsDomain']);
 
-		if (!empty($parsed) && is_array($parsed))
-			$this->_domain = rtrim(empty($parsed['scheme']) ? 'http://'. $modSettings['Yourls_settingsDomain'] : $modSettings['Yourls_settingsDomain']);
+			if (!empty($parsed) && is_array($parsed))
+				$this->domain = rtrim(empty($parsed['scheme']) ? 'http://'. $modSettings['Yourls_settingsDomain'] : $modSettings['Yourls_settingsDomain']);
 
-		$this->_api_url = $this->_domain . '/yourls-api.php';
+			$this->apiUrl = $this->domain . '/yourls-api.php';
+		}
+
+		// Fill up an error
+		else
+
 	}
 
 	/**
@@ -71,34 +81,30 @@ class Yourls
 	 */
 	protected function fetch_web_data($url = false)
 	{
-		/* Safety first! */
-		if (empty($url))
-			return false;
+		/* Overwrite */
+		if (!empty($url))
+			$this->url = $url;
 
 		/* I can haz cURL? */
 		if (function_exists ('curl_init'))
 		{
 			/* From the remote API call sample */
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $api_url);
+			curl_setopt($ch, CURLOPT_URL, $this->apiUrl);
 			curl_setopt($ch, CURLOPT_HEADER, 0);            // No header in the result
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return, do not echo result
 			curl_setopt($ch, CURLOPT_POST, 1);              // This is a POST request
 			curl_setopt($ch, CURLOPT_POSTFIELDS, array(     // Data to POST
-					'url'      => $url,
-					'keyword'  => $keyword,
-					'format'   => $format,
+					'url'      => $this->url,
+					'format'   => 'json',
 					'action'   => 'shorturl',
-					'username' => $username,
-					'password' => $password
+					'username' => $this->_user,
+					'password' => $this->_pass
 				));
 
 			/* Fetch */
-			$data = curl_exec($ch);
+			$this->data = curl_exec($ch);
 			curl_close($ch);
-
-			/* Send the data directly, evil, I'm evil! :P */
-			return $data;
 		}
 
 		/* Good old SMF's fetch_web_data to the rescue! */
@@ -108,11 +114,15 @@ class Yourls
 			require_once($this->_sourcedir .'/Subs-Package.php');
 
 			/* Send the result directly, we are gonna handle it on every case */
-			return fetch_web_data($url);
+			$this->data = fetch_web_data($this->url);
 		}
 	}
 
-	protected function init()
+	public function getData($url)
 	{
+		$this->url = $url;
+		$this->fetch_web_data();
+
+		return $this->data;
 	}
 }
