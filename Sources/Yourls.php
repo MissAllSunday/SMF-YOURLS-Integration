@@ -55,7 +55,7 @@ class Yourls
 
 		if (!empty($modSettings['Yourls_settingsDomain']))
 		{
-			$this->domain = trim(strpos($modSettings['Yourls_settingsDomain'], 'http://') !== 0 || strpos($modSettings['Yourls_settingsDomain'], 'https://') !== 0 ? $modSettings['Yourls_settingsDomain'] : 'http://'. $modSettings['Yourls_settingsDomain']);
+			$this->domain = ((substr_compare($modSettings['Yourls_settingsDomain'], 'http://', 0, 7)) === 0 || (substr_compare($modSettings['Yourls_settingsDomain'], 'https://', 0, 8)) === 0 ?  '' : 'http://') . $modSettings['Yourls_settingsDomain'];
 
 			$this->apiUrl = $this->domain . '/yourls-api.php';
 		}
