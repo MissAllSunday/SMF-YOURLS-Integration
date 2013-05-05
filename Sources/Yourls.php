@@ -55,10 +55,7 @@ class Yourls
 
 		if (!empty($modSettings['Yourls_settingsDomain']))
 		{
-			$parsed = parse_url($modSettings['Yourls_settingsDomain']);
-
-			if (!empty($parsed) && is_array($parsed))
-				$this->domain = rtrim(empty($parsed['scheme']) ? 'http://'. $modSettings['Yourls_settingsDomain'] : $modSettings['Yourls_settingsDomain']);
+			$this->domain = rtrim(strpos($modSettings['Yourls_settingsDomain'], 'http://') !== 0 && strpos($modSettings['Yourls_settingsDomain'], 'https://') !== 0 ? 'http://'. $modSettings['Yourls_settingsDomain'] : $modSettings['Yourls_settingsDomain']);
 
 			$this->apiUrl = $this->domain . '/yourls-api.php';
 		}
@@ -66,7 +63,6 @@ class Yourls
 		// Fill up an error
 		else
 			$this->errors[] = 'noValidDomain';
-
 	}
 
 	protected function handleErrors($action)
