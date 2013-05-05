@@ -51,19 +51,19 @@ function Yourls_postSettings(&$return_config = false)
 	global $context, $scripturl, $txt;
 
 	$config_vars = array(
-		array('desc', self::$name .'_settingsDesc'),
-		array('check', self::$name .'_settingsEnable', 'subtext' => $txt[self::$name .'_settingsEnable_sub']),
-		array('text', self::$name .'_settingsDomain', 'subtext' => $txt[self::$name .'_settingsDomain_sub']),
-		array('text', self::$name .'_settingsUser', 'subtext' => $txt[self::$name .'_settingsUser_sub']),
-		array('text', self::$name .'_settingsPass', 'subtext' => $txt[self::$name .'_settingsPass_sub']),
-		array('check', self::$name .'_settingsEnableBBC', 'subtext' => $txt[self::$name .'_settingsEnableBBC_sub']),
+		array('desc', 'Yourls_settingsDesc'),
+		array('check', 'Yourls_settingsEnable', 'subtext' => $txt['Yourls_settingsEnable_sub']),
+		array('text', 'Yourls_settingsDomain', 'subtext' => $txt['Yourls_settingsDomain_sub']),
+		array('text', 'Yourls_settingsUser', 'subtext' => $txt['Yourls_settingsUser_sub']),
+		array('text', 'Yourls_settingsPass', 'subtext' => $txt['Yourls_settingsPass_sub']),
+		array('check', 'Yourls_settingsEnableBBC', 'subtext' => $txt['Yourls_settingsEnableBBC_sub']),
 	);
 
 	if ($return_config)
 		return $config_vars;
 
 	$context['post_url'] = $scripturl . '?action=admin;area=modsettings;save;sa=yourls';
-	$context['settings_title'] = $txt[self::$name .'_admin_title'];
+	$context['settings_title'] = $txt['Yourls_admin_title'];
 
 	if (empty($config_vars))
 	{
