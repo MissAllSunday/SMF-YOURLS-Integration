@@ -38,6 +38,7 @@ class Yourls
 	public $apiUrl = '';
 	public $apiAction = 'shorturl';
 	public $errors = array();
+	protected $_infoOptions = array('status', 'code', 'url', 'message', 'title', 'shorturl', 'statusCode',);
 
 	public function __construct($url)
 	{
@@ -93,13 +94,9 @@ class Yourls
 	 */
 	protected function fetch_web_data()
 	{
-		// Overwrite
+		// Overwrite if needed
 		if (!empty($url))
 			$this->url = $url;
-
-		// An extra check just to be sure
-		if (!isset($this->apiAction) || empty($this->apiAction))
-			$this->apiAction = 'shorturl';
 
 		// I can haz cURL?
 		if (function_exists ('curl_init'))
@@ -140,14 +137,10 @@ class Yourls
 	 * Make the call to the external server and process the results, deals with errors if any
 	 *
 	 * @access public
-	 * @param string $apiAction the actions the API should perform
 	 * @return mixed either a boolean false or an object
 	 */
-	public function processData($apiAction = 'shorturl')
+	protected function processData()
 	{
-		// Set the API action
-		$this->apiAction = !empty($apiAction) ? $apiAction : 'shorturl';
-
 		// Call the server, sets _rawData
 		$this->fetch_web_data();
 
@@ -171,15 +164,15 @@ class Yourls
 	 */
 	public function getUrlInfo($info = 'shorturl')
 	{
+		// Set the API action
+		$this->apiAction = 'shorturl';
+
 		// Someone forgot to call Yourls::processData(), lets call it, just to see what happens :P
 		if (empty($this->_rawData) || empty($this->data))
 			$this->processData();
 
-		// Safety first, hardcode the only possible outcomes
-		$safe = array('status', 'code', 'url', 'message', 'title', 'shorturl', 'statusCode');
-
 		// Check if the info string is a valid one and also check for the data existance...
-		if (!in_array($info, $safe) || empty($this->data->$info))
+		if (!in_array($info, $this->_infoOptions) || empty($this->data->$info))
 		{
 			$this->errors[] = 'noValidInfoAction';
 			return false;
@@ -187,5 +180,49 @@ class Yourls
 
 		// Return the values, "url" is a special case
 		return 'url' == $info ? get_object_vars($this->data->$info) : $this->data->$info;
+	}
+
+	public function getAllInfo()
+	{
+		// Set the API action
+		$this->apiAction = 'shorturl';
+
+		// Someone forgot to call Yourls::processData(), lets call it, just to see what happens :P
+		if (empty($this->_rawData) || empty($this->data))
+			$this->processData();
+
+		if (empty($this->data))
+		{
+			$this->errors[] = 'noValidInfoAction';
+			return false;
+		}
+
+		// All good, return the object
+		return $this->data;
+	}
+
+	/**
+	 * Generic method to get info
+	 *
+	 * @access public
+	 * @param string $apiAction the action that will be performed
+	 * @return mixed if param "url" is used, the method will return an array, for all the rest is a string
+	 */
+	public function get($apiAction)
+	{
+		// Set the API action
+		$this->apiAction = !empty($apiAction) ? $apiAction : 'shorturl';
+
+		// Be sure we got all we need
+		if (empty($this->_rawData) || empty($this->data))
+			$this->processData();
+
+		if (empty($this->data))
+		{
+			$this->errors[] = 'noStats';
+			return false;
+		}
+
+		return $this->data;
 	}
 }
