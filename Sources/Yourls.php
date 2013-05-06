@@ -34,7 +34,7 @@ class Yourls
 	protected $_user = false;
 	protected $_pass = false;
 	public $domain = false;
-	public $data = array();
+	protected $_data = array();
 	public $apiUrl = '';
 	public $errors = array();
 
@@ -51,8 +51,7 @@ class Yourls
 	{
 		global $modSettings;
 
-		$parsed = array();
-
+		// Check if the url has a scheme
 		if (!empty($modSettings['Yourls_settingsDomain']))
 		{
 			$this->domain = ((substr_compare($modSettings['Yourls_settingsDomain'], 'http://', 0, 7)) === 0 || (substr_compare($modSettings['Yourls_settingsDomain'], 'https://', 0, 8)) === 0 ?  '' : 'http://') . $modSettings['Yourls_settingsDomain'];
@@ -87,14 +86,14 @@ class Yourls
 	 */
 	protected function fetch_web_data($url = false)
 	{
-		/* Overwrite */
+		// Overwrite
 		if (!empty($url))
 			$this->url = $url;
 
-		/* I can haz cURL? */
+		// I can haz cURL?
 		if (function_exists ('curl_init'))
 		{
-			/* From the remote API call sample */
+			// From the remote API call sample
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $this->apiUrl);
 			curl_setopt($ch, CURLOPT_HEADER, 0);            // No header in the result
@@ -108,19 +107,19 @@ class Yourls
 					'password' => $this->_pass
 				));
 
-			/* Fetch */
-			$this->data = curl_exec($ch);
+			// Fetch
+			$this->_data = curl_exec($ch);
 			curl_close($ch);
 		}
 
-		/* Good old SMF's fetch_web_data to the rescue! */
+		// Good old SMF's fetch_web_data to the rescue!
 		else
 		{
-			/* Requires a function in a source file far far away... */
+			// Requires a function in a source file far far away...
 			require_once($this->_sourcedir .'/Subs-Package.php');
 
-			/* Send the result directly, we are gonna handle it on every case */
-			$this->data = fetch_web_data($this->url);
+			// Send the result directly, we are gonna handle it on every case
+			$this->_data = fetch_web_data($this->url);
 		}
 	}
 
@@ -128,6 +127,8 @@ class Yourls
 	{
 		$this->url = $url;
 		$this->fetch_web_data();
+		
+		if (!empty($this->data))
 
 		return json_decode($this->data, true);
 	}
