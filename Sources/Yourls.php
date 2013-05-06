@@ -158,10 +158,18 @@ class Yourls
 			return false;
 		}
 
+		// Return the data as an object
 		return $this->data = json_decode($this->_rawData);
 	}
 
-	public function getUrlInfo($info)
+	/**
+	 * Returns specific info about a shortened URL
+	 *
+	 * @access public
+	 * @param string $info The specific info you're looking after
+	 * @return mixed if param "url" is used, the method will return an array, for all the rest is a string
+	 */
+	public function getUrlInfo($info = 'shorturl')
 	{
 		// Someone forgot to call Yourls::processData(), lets call it, just to see what happens :P
 		if (empty($this->_rawData) || empty($this->data))
@@ -170,7 +178,8 @@ class Yourls
 		// Safety first, hardcode the only possible outcomes
 		$safe = array('status', 'code', 'url', 'message', 'title', 'shorturl', 'statusCode');
 
-		if (!in_array($info, $safe))
+		// Check if the info string is a valid one and also check for the data existance...
+		if (!in_array($info, $safe) || empty($this->data->$info))
 		{
 			$this->errors[] = 'noValidInfoAction';
 			return false;
