@@ -34,7 +34,7 @@ class Yourls
 	protected $_user = false;
 	protected $_pass = false;
 	public $domain = false;
-	protected $_data = array();
+	protected $_rawData = array();
 	public $apiUrl = '';
 	public $errors = array();
 
@@ -59,7 +59,7 @@ class Yourls
 			$this->apiUrl = $this->domain . '/yourls-api.php';
 		}
 
-		// Fill up an error
+		// Fill up an error, there is no domain to work with
 		else
 			$this->errors[] = 'emptyDomain';
 	}
@@ -100,15 +100,15 @@ class Yourls
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return, do not echo result
 			curl_setopt($ch, CURLOPT_POST, 1);              // This is a POST request
 			curl_setopt($ch, CURLOPT_POSTFIELDS, array(     // Data to POST
-					'url'      => $this->url,
-					'format'   => 'json',
-					'action'   => 'shorturl',
-					'username' => $this->_user,
-					'password' => $this->_pass
-				));
+				'url'      => $this->url,
+				'format'   => 'json',
+				'action'   => 'shorturl',
+				'username' => $this->_user,
+				'password' => $this->_pass
+			));
 
 			// Fetch
-			$this->_data = curl_exec($ch);
+			$this->_rawData = curl_exec($ch);
 			curl_close($ch);
 		}
 
@@ -119,7 +119,7 @@ class Yourls
 			require_once($this->_sourcedir .'/Subs-Package.php');
 
 			// Send the result directly, we are gonna handle it on every case
-			$this->_data = fetch_web_data($this->url);
+			$this->_rawData = fetch_web_data($this->url);
 		}
 	}
 
@@ -127,9 +127,16 @@ class Yourls
 	{
 		$this->url = $url;
 		$this->fetch_web_data();
-		
-		if (!empty($this->data))
 
-		return json_decode($this->data, true);
+		// There was an error
+		if (empty($this->_rawData))
+		{
+			$this->errors[] = 'dataFetchFailed';
+			return;
+		}
+
+		$this->data = json_decode($this->_rawData);
+
+
 	}
 }
