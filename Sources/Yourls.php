@@ -169,13 +169,14 @@ class Yourls
 
 		// Safety first, hardcode the only possible outcomes
 		$safe = array('status', 'code', 'url', 'message', 'title', 'shorturl', 'statusCode');
-		
+
 		if (!in_array($info, $safe))
 		{
-			$this->errors[] = 'noValidInfoaction';
+			$this->errors[] = 'noValidInfoAction';
 			return false;
 		}
-		
-		return $this->data->$info;
+
+		// Return the values, "url" is a special case
+		return 'url' == $info ? get_object_vars($this->data->$info) : $this->data->$info;
 	}
 }
