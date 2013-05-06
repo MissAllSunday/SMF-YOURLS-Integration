@@ -36,12 +36,20 @@ class Yourls
 	public $domain = false;
 	protected $_rawData = array();
 	public $apiUrl = '';
+	public $apiAction = 'shorturl';
 	public $errors = array();
 
-	public function __construct()
+	public function __construct($url)
 	{
 		global $modSettings;
 
+		if (empty($url))
+		{
+			$this->errors[] = 'noUrl';
+			return false;
+		}
+
+		$this->url = $url;
 		$this->_user = !empty($modSettings['Yourls_settingsUser']) ? $modSettings['Yourls_settingsUser'] : false;
 		$this->_pass = !empty($modSettings['Yourls_settingsPass']) ? $modSettings['Yourls_settingsPass'] : false;
 		$this->setDomain();
@@ -78,17 +86,20 @@ class Yourls
 	}
 
 	/**
-	 * Tries to fetch the content of a given url
+	 * Tries to fetch the content of a given url, puts the result in a protected property Yourls::_rawData
 	 *
 	 * @access protected
-	 * @param string $url the url to call
-	 * @return mixed either the page requested or a boolean false
+	 * @return void
 	 */
-	protected function fetch_web_data($url = false)
+	protected function fetch_web_data()
 	{
 		// Overwrite
 		if (!empty($url))
 			$this->url = $url;
+
+		// An extra check just to be sure
+		if (!isset($this->apiAction) || empty($this->apiAction))
+			$this->apiAction = 'shorturl';
 
 		// I can haz cURL?
 		if (function_exists ('curl_init'))
@@ -102,7 +113,7 @@ class Yourls
 			curl_setopt($ch, CURLOPT_POSTFIELDS, array(     // Data to POST
 				'url'      => $this->url,
 				'format'   => 'json',
-				'action'   => 'shorturl',
+				'action'   => $this->apiAction,
 				'username' => $this->_user,
 				'password' => $this->_pass
 			));
@@ -115,28 +126,56 @@ class Yourls
 		// Good old SMF's fetch_web_data to the rescue!
 		else
 		{
+			global $sourcedir;
+
 			// Requires a function in a source file far far away...
-			require_once($this->_sourcedir .'/Subs-Package.php');
+			require_once($sourcedir .'/Subs-Package.php');
 
 			// Send the result directly, we are gonna handle it on every case
 			$this->_rawData = fetch_web_data($this->url);
 		}
 	}
 
-	public function getData($url)
+	/**
+	 * Make the call to the external server and process the results, deals with errors if any
+	 *
+	 * @access public
+	 * @param string $apiAction the actions the API should perform
+	 * @return mixed either a boolean false or an object
+	 */
+	public function processData($apiAction = 'shorturl')
 	{
-		$this->url = $url;
+		// Set the API action
+		$this->apiAction = !empty($apiAction) ? $apiAction : 'shorturl';
+
+		// Call the server, sets _rawData
 		$this->fetch_web_data();
 
 		// There was an error
 		if (empty($this->_rawData))
 		{
 			$this->errors[] = 'dataFetchFailed';
-			return;
+			return false;
 		}
 
-		$this->data = json_decode($this->_rawData);
+		return $this->data = json_decode($this->_rawData);
+	}
 
+	public function getUrlInfo($info)
+	{
+		// Someone forgot to call Yourls::processData(), lets call it, just to see what happens :P
+		if (empty($this->_rawData) || empty($this->data))
+			$this->processData();
 
+		// Safety first, hardcode the only possible outcomes
+		$safe = array('status', 'code', 'url', 'message', 'title', 'shorturl', 'statusCode');
+		
+		if (!in_array($info, $safe))
+		{
+			$this->errors[] = 'noValidInfoaction';
+			return false;
+		}
+		
+		return $this->data->$info;
 	}
 }
