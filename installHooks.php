@@ -33,7 +33,7 @@ elseif (!defined('SMF'))
 
 $hooks = array(
 	'integrate_admin_include' => '$sourcedir/YourlsHooks.php',
-	// 'integrate_pre_include' => '$sourcedir/Yourls.php',
+	'integrate_pre_include' => '$sourcedir/Yourls.php',
 	'integrate_bbc_codes' => 'Yourls::bbcCode',
 	'integrate_bbc_buttons' => 'Yourls::bbcButton',
 	'integrate_modify_modifications' => 'Yourls_settings',

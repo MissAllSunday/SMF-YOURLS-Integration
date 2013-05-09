@@ -9,7 +9,7 @@
 		<operation>
 			<search position="replace"><![CDATA[// Load the proper template and/or sub template.]]></search>
 			<add><![CDATA[// Yourls integration
-	require_once($sourcedir .'/Yourls.php');
+	loadLanguage('Yourls');
 	$yourls = new Yourls($scripturl . '?topic=' . $topic);
 	$context['yourls'] = $yourls->getUrlInfo('shorturl');
 	// Yourls integration
