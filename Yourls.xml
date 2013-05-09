@@ -17,4 +17,15 @@
 	// Load the proper template and/or sub template.]]></add>
 		</operation>
 	</file>
+
+	<file name="$themedir/Display.template.php">
+		<operation>
+			<search position="replace"><![CDATA[if ($context['can_reply'] && !empty($options['display_quick_reply']))]]></search>
+			<add><![CDATA[// Yourls integrati
+
+	// Yourls integrati
+
+	if ($context['can_reply'] && !empty($options['display_quick_reply']))]]></add>
+		</operation>
+	</file>
 </modification>
