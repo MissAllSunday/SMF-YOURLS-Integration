@@ -13,6 +13,7 @@
 		<modification type="file" format="xml">Yourls.xml</modification>
 		<require-dir name="Themes" destination="$boarddir">Theme and Language files</require-dir>
 		<require-dir name="Sources" destination="$boarddir">Source files</require-dir>
+		<require-file name="yourls.gif" destination="$imagesdir/bbc" />
 		<redirect url="?action=admin;area=modsettings;sa=yourls"></redirect>
 	</install>
 
@@ -24,6 +25,7 @@
 		<remove-file name="$languagedir/Yourls.english-utf8.php" />
 		<remove-file name="$languagedir/Yourls.spanish_latin-utf8.php" />
 		<remove-file name="$languagedir/Yourls.spanish_latin.php" />
+		<remove-file name="$imagesdir/bbc/yourls.gif" />
 	</uninstall>
 
 </package-info>
