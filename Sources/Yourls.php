@@ -237,7 +237,7 @@ class Yourls
 		$tag = !empty($modSettings['Yourls_BBCtag']) ? trim($modSettings['Yourls_BBCtag']) : 'yourls';
 
 		$codes[] = array(
-				'tag' => 'yourls',
+				'tag' => $tag,
 				'type' => 'unparsed_content',
 				'content' => '<a href="$1" class="bbc_link" target="_blank">$1</a>',
 				'validate' => create_function('&$tag, &$data, $disabled', '
@@ -246,11 +246,14 @@ class Yourls
 						$data = \'http://\' . $data;
 						$data = preg_replace(\'~[\r|\n]+~\', \'\', $data);
 
+						$yourls = new Yourls($data);
+						$data = $yourls->getUrlInfo(\'shorturl\');
+
 				'),
 			);
 
 		$codes[] = array(
-				'tag' => 'yourls',
+				'tag' => $tag,
 				'type' => 'unparsed_equals',
 				'before' => '<a href="$1" class="bbc_link" target="_blank">',
 				'after' => '</a>',
@@ -258,6 +261,9 @@ class Yourls
 					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
 						$data = \'http://\' . $data;
 						$data = preg_replace(\'~[\r|\n]+~\', \'\', $data);
+
+						$yourls = new Yourls($data);
+						$data = $yourls->getUrlInfo(\'shorturl\');
 
 				'),
 				'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
@@ -280,10 +286,10 @@ class Yourls
 
 		$buttons[count($buttons) - 1][] = array(
 			'image' => 'yourls',
-			'code' => 'yourls',
-			'before' => '[yourls]',
-			'after' => '[yourls]',
-			'description' => 'yourls',
+			'code' => $tag,
+			'before' => '['. $tag .']',
+			'after' => '[/'. $tag .']',
+			'description' => $txt['Yourls_bbcDesc'],
 		);
 	}
 }
