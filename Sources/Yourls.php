@@ -120,7 +120,6 @@ class Yourls
 			curl_close($ch);
 		}
 
-		// Good old SMF's fetch_web_data to the rescue!
 		else
 			return false;
 	}
