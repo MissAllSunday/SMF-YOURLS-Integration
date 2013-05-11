@@ -19,6 +19,9 @@
 		<code>uninstallHooks.php</code>
 		<remove-file name="$sourcedir/Yourls.php" />
 		<remove-file name="$languagedir/Yourls.english.php" />
+		<remove-file name="$languagedir/Yourls.english-utf8.php" />
+		<remove-file name="$languagedir/Yourls.spanish_latin-utf8.php" />
+		<remove-file name="$languagedir/Yourls.spanish_latin.php" />
 	</uninstall>
 
 </package-info>
