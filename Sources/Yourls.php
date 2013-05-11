@@ -237,7 +237,7 @@ class Yourls
 			$retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
 
-			if (200 == $retcode)
+			if (200 == $retcode || 302 == $retcode)
 				$return = 200;
 
 			/* There is an issue, disable the mod and tell the admin */
@@ -282,7 +282,8 @@ class Yourls
 						$yourls = new Yourls($data);
 
 						/* Check if everything is fine and dandy... */
-						if ($yourls->checkAPIStatus() == 200)
+						$check = $yourls->checkAPIStatus();
+						if ($check = 200)
 							$data = $yourls->getUrlInfo(\'shorturl\');
 
 				'),
@@ -299,7 +300,8 @@ class Yourls
 						$data = preg_replace(\'~[\r|\n]+~\', \'\', $data);
 
 						/* Check if everything is fine and dandy... */
-						if ($yourls->checkAPIStatus() == 200)
+						$check = $yourls->checkAPIStatus();
+						if ($check = 200)
 							$data = $yourls->getUrlInfo(\'shorturl\');
 
 				'),
