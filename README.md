@@ -14,7 +14,7 @@ This mod allows you to use your YOURLS domain to add a short ulr version of all 
 
 ######Installation:
 
-Please use SMF's [Package Manager](http://wiki.simplemachines.org/smf/Package_manager), and make sure to mark the "Install in other themes" checkbox during install to ensure the proper installation on any theme different than the default theme.
+Please use SMF's [Package Manager](http://wiki.simplemachines.org/smf/Package_manager) and make sure to mark the "Install in other themes" checkbox during install to ensure the proper installation on any theme different than the default theme.
 
 ######Notes:
 

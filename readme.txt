@@ -7,10 +7,17 @@ Created by [url=http://missallsunday.com]Suki[/url] [color=red]important, suppor
 
 [color=purple][b][size=12pt]License[/size][/b][/color]
 [code]
- * This SMF modification is subject to the Mozilla Public License Version
- * 2.0 (the "License"); you may not use this SMF modification except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/[/code]
+ * Version: MPL 2.0
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+[/code]
 
 
 [size=12pt][color=purple]Introduction[/color][/size]
@@ -26,8 +33,7 @@ I welcome translations, please post it on the support site ;)
 
 [size=12pt][color=purple]Installation[/color][/size]
 
-Use the [url=http://wiki.simplemachines.org/smf/Package_manager]Package Manager[/url] to install this modification.
-Tested on PHP 5.3 and 5.2, IE10 and Opera.
+Use the [url=http://wiki.simplemachines.org/smf/Package_manager]Package Manager[/url] and make sure to mark the "Install in other themes" checkbox during install to ensure the proper installation on any theme different than the default theme.
 
 
 [size=12pt][color=purple]Changelog[/color][/size]
