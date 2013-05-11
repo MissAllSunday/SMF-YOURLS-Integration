@@ -219,7 +219,7 @@ class Yourls
 
 	public function checkAPIStatus($url = false)
 	{
-		global $smcFunc, $txt;
+		global $txt;
 
 		if (!isset($txt['Yourls_title_main']))
 			loadLanguage('Yourls');
@@ -230,7 +230,7 @@ class Yourls
 		if ($return = cache_get_data('yourls_response', 120) == null)
 		{
 			/* Check the server */
-			$toCheck = curl_init($url);
+			$ch = curl_init($toCheck);
 			curl_setopt($ch, CURLOPT_NOBODY, true);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 			curl_exec($ch);
@@ -246,11 +246,7 @@ class Yourls
 				$return = false;
 
 				/* Disable both features at once */
-				$smcFunc['db_query']('', '
-					UPDATE {db_prefix}settings
-					SET Yourls_settingsEnable = 0, Yourls_settingsEnableBBC = 0',
-					array()
-				);
+				updateSettings(array('Yourls_settingsEnable' => 0, 'Yourls_settingsEnableBBC' => 0), true);
 
 				/* Tell the admin about it */
 				log_error($txt['Yourls_error_server_error']);
