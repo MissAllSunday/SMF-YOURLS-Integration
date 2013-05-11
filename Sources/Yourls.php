@@ -230,8 +230,11 @@ class Yourls
 	{
 		global $modSettings;
 
-		if (empty($modSettings['OYTE_master']))
+		if (empty($modSettings['Yourls_settingsEnableBBC']))
 			return;
+
+		/* Set the tag */
+		$tag = !empty($modSettings['Yourls_BBCtag']) ? trim($modSettings['Yourls_BBCtag']) : 'yourls';
 
 		$codes[] = array(
 				'tag' => 'url',

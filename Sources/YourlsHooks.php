@@ -57,6 +57,7 @@ function Yourls_postSettings($return_config = false)
 		array('text', 'Yourls_settingsUser', 'subtext' => $txt['Yourls_settingsUser_sub']),
 		array('text', 'Yourls_settingsPass', 'subtext' => $txt['Yourls_settingsPass_sub']),
 		array('check', 'Yourls_settingsEnableBBC', 'subtext' => $txt['Yourls_settingsEnableBBC_sub']),
+		array('text', 'Yourls_BBCtag', 'subtext' => $txt['Yourls_BBCtag_sub']),
 	);
 
 	if ($return_config)
