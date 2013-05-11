@@ -50,6 +50,6 @@ $txt['Yourls_bbcDesc'] = 'Use this BBC to create a short version of any url';
 $txt['Yourls_error_noUrl'] = 'No url was provided';
 $txt['Yourls_error_emptyDomain'] = 'The YOURLS domain setting is empty, you need to provide a valid domain with YOURLS properly installed.';
 $txt['Yourls_error_dataFetchFailed'] = 'There was a problem fetching the data from the external server';
-$txt['Yourls_error_noValidInfoAction'] = 'You mut provide a valid info request';
+$txt['Yourls_error_noValidInfoAction'] = 'You must provide a valid info request';
 $txt['Yourls_error_server_error'] = 'The yourls API server is not responding, to prevent any downtime on your forum the mod has been disable, please manually make sure the server is up and enable the mod again.';
 
