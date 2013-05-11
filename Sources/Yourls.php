@@ -226,6 +226,23 @@ class Yourls
 		return $this->data;
 	}
 
+	protected function checkAPIStatus($url = false)
+	{
+		$toCheck = !empty($url) ? $url : $this->domain;
+
+		$toCheck = curl_init($url);
+		curl_setopt($ch, CURLOPT_NOBODY, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_exec($ch);
+		$retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+		if (200==$retcode)
+			return true;
+
+		else
+			return false;
+	}
+
 	function bbCode(&$codes)
 	{
 		global $modSettings;
