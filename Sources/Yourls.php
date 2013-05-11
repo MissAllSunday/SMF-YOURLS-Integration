@@ -122,15 +122,7 @@ class Yourls
 
 		// Good old SMF's fetch_web_data to the rescue!
 		else
-		{
-			global $sourcedir;
-
-			// Requires a function in a source file far far away...
-			require_once($sourcedir .'/Subs-Package.php');
-
-			// Send the result directly, we are gonna handle it on every case
-			$this->_rawData = fetch_web_data($this->url);
-		}
+			return false;
 	}
 
 	/**
@@ -228,6 +220,11 @@ class Yourls
 
 	protected function checkAPIStatus($url = false)
 	{
+		global $smcFunc, $txt;
+
+		if (!isset($txt['Yourls_title_main']))
+			loadLanguage('Yourls');
+
 		$toCheck = !empty($url) ? $url : $this->domain;
 
 		/* Lets see if the cache has something */
@@ -241,7 +238,7 @@ class Yourls
 			$retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
 
-			if (200==$retcode)
+			if (200 == $retcode)
 				$return = 200;
 
 			/* There is an issue, disable the mod and tell the admin */
@@ -249,6 +246,15 @@ class Yourls
 			{
 				$return = false;
 
+				/* Disable both features at once */
+				$smcFunc['db_query']('', '
+					UPDATE {db_prefix}settings
+					SET Yourls_settingsEnable = 0, Yourls_settingsEnableBBC = 0',
+					array()
+				);
+
+				/* Tell the admin about it */
+				log_error($txt['Yourls_error_server_error']);
 			}
 
 			/* Store the response */
