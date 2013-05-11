@@ -230,17 +230,32 @@ class Yourls
 	{
 		$toCheck = !empty($url) ? $url : $this->domain;
 
-		$toCheck = curl_init($url);
-		curl_setopt($ch, CURLOPT_NOBODY, true);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_exec($ch);
-		$retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		curl_close($ch);
-		if (200==$retcode)
-			return true;
+		/* Lets see if the cache has something */
+		if ($return = cache_get_data('yourls_response', 120) == null)
+		{
+			/* Check the server */
+			$toCheck = curl_init($url);
+			curl_setopt($ch, CURLOPT_NOBODY, true);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_exec($ch);
+			$retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			curl_close($ch);
 
-		else
-			return false;
+			if (200==$retcode)
+				$return = 200;
+
+			/* There is an issue, disable the mod and tell the admin */
+			else
+			{
+				$return = false;
+
+			}
+
+			/* Store the response */
+			cache_put_data('yourls_response', $return, 120);
+		}
+
+		return $return;
 	}
 
 	function bbCode(&$codes)
