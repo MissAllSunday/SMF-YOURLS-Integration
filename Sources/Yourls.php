@@ -217,7 +217,7 @@ class Yourls
 		return $this->data;
 	}
 
-	protected function checkAPIStatus($url = false)
+	public function checkAPIStatus($url = false)
 	{
 		global $smcFunc, $txt;
 
@@ -284,7 +284,10 @@ class Yourls
 						$data = preg_replace(\'~[\r|\n]+~\', \'\', $data);
 
 						$yourls = new Yourls($data);
-						$data = $yourls->getUrlInfo(\'shorturl\');
+
+						/* Check if everything is fine and dandy... */
+						if ($yourls->checkAPIStatus() == 200)
+							$data = $yourls->getUrlInfo(\'shorturl\');
 
 				'),
 			);
@@ -299,8 +302,9 @@ class Yourls
 						$data = \'http://\' . $data;
 						$data = preg_replace(\'~[\r|\n]+~\', \'\', $data);
 
-						$yourls = new Yourls($data);
-						$data = $yourls->getUrlInfo(\'shorturl\');
+						/* Check if everything is fine and dandy... */
+						if ($yourls->checkAPIStatus() == 200)
+							$data = $yourls->getUrlInfo(\'shorturl\');
 
 				'),
 				'disallow_children' => array('email', 'ftp', 'url', 'iurl'),

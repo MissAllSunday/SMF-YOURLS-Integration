@@ -10,8 +10,10 @@
 			<search position="replace"><![CDATA[// Load the proper template and/or sub template.]]></search>
 			<add><![CDATA[// Yourls integration
 	loadLanguage('Yourls');
+	$context['yourls'] = false;
 	$yourls = new Yourls($scripturl . '?topic=' . $topic);
-	$context['yourls'] = $yourls->getUrlInfo('shorturl');
+	if ($yourls->checkAPIStatus() == 200)
+		$context['yourls'] = $yourls->getUrlInfo('shorturl');
 	// Yourls integration
 
 	// Load the proper template and/or sub template.]]></add>
