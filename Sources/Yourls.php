@@ -285,7 +285,6 @@ class Yourls
 						$check = $yourls->checkAPIStatus();
 						if ($check = 200)
 							$data = $yourls->getUrlInfo(\'shorturl\');
-
 				'),
 			);
 
@@ -299,11 +298,12 @@ class Yourls
 						$data = \'http://\' . $data;
 						$data = preg_replace(\'~[\r|\n]+~\', \'\', $data);
 
+						$yourls = new Yourls($data);
+
 						/* Check if everything is fine and dandy... */
 						$check = $yourls->checkAPIStatus();
 						if ($check = 200)
 							$data = $yourls->getUrlInfo(\'shorturl\');
-
 				'),
 				'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
 				'disabled_after' => ' ($1)',
