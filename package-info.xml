@@ -10,6 +10,7 @@
 		<readme parsebbc="true">readme.txt</readme>
 		<database>check.php</database>
 		<code>installHooks.php</code>
+		<modification type="file" format="xml">Yourls.xml</modification>
 		<require-dir name="Themes" destination="$boarddir">Theme and Language files</require-dir>
 		<require-dir name="Sources" destination="$boarddir">Source files</require-dir>
 		<redirect url="?action=admin;area=modsettings;sa=yourls"></redirect>
@@ -17,6 +18,7 @@
 
 	<uninstall for="2.0 - 2.0.99">
 		<code>uninstallHooks.php</code>
+		<modification type="file" format="xml" reverse="true">Yourls.xml</modification>
 		<remove-file name="$sourcedir/Yourls.php" />
 		<remove-file name="$languagedir/Yourls.english.php" />
 		<remove-file name="$languagedir/Yourls.english-utf8.php" />

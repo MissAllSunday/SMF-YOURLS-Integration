@@ -1,7 +1,9 @@
 [center][color=purple][size=15pt]SMF - YOURLS Integration[/size][/color] [/center]
 
 
-Created by [url=http://missallsunday.com]Suki[/url] [color=red]important, support for this modification will only be provided by it's author on the developer's site.[/color]
+Created by [url=http://missallsunday.com]Suki[/url] 
+
+[color=red]important, support for this modification will only be provided by it's author on the developer's site.[/color]
 
 [b]This mod needs PHP 5.2, cURL library and SMF 2.0.x or greater[/b]
 
@@ -27,6 +29,7 @@ This mod allows you to use your YOURLS domain to add a short ulr version of all 
 [size=12pt][color=purple]Supported Languages[/color][/size]
 
 o English/utf8
+o Spanish Latin/utf8
 
 I welcome translations, please post it on the support site ;)
 
