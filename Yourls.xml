@@ -12,7 +12,9 @@
 	loadLanguage('Yourls');
 	$context['yourls'] = false;
 	$yourls = new Yourls($scripturl . '?topic=' . $topic);
-	if ($yourls->checkAPIStatus() == 200)
+	$check = $yourls->checkAPIStatus();
+
+	if ($check = 200)
 		$context['yourls'] = $yourls->getUrlInfo('shorturl');
 	// Yourls integration
 
