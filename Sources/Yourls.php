@@ -259,7 +259,7 @@ class Yourls
 		return $return;
 	}
 
-	function bbCode(&$codes)
+	static function bbCode(&$codes)
 	{
 		global $modSettings;
 
@@ -308,8 +308,8 @@ class Yourls
 			);
 	}
 
-	 /* The bbc button */
-	function bbcButton(&$buttons)
+	/* The bbc button */
+	static function bbcButton(&$buttons)
 	{
 		global $txt, $modSettings;
 
