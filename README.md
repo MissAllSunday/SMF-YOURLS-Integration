@@ -1,4 +1,4 @@
-**MF - YOURLS Integration**, http://missallsunday.com
+**SMF - YOURLS Integration**, http://missallsunday.com
 
 This software is licensed under [MPL 2.0 license](http://www.mozilla.org/MPL/2.0/).
 
@@ -11,6 +11,10 @@ This mod allows you to use your YOURLS domain to add a short ulr version of all 
 - SMF 2.0.x or greater.
 - PHP 5.2 or greater.
 - cURL library.
+
+######Installation:
+
+Please use SMF's [Package Manager](http://wiki.simplemachines.org/smf/Package_manager), and make sure to mark the "Install in other themes" checkbox during install to ensure the proper installation on any theme different than the default theme.
 
 ######Notes:
 
