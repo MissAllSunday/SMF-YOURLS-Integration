@@ -237,25 +237,32 @@ class Yourls
 		$tag = !empty($modSettings['Yourls_BBCtag']) ? trim($modSettings['Yourls_BBCtag']) : 'yourls';
 
 		$codes[] = array(
-				'tag' => 'url',
+				'tag' => $tag,
 				'type' => 'unparsed_content',
 				'content' => '<a href="$1" class="bbc_link" target="_blank">$1</a>',
 				'validate' => create_function('&$tag, &$data, $disabled', '
 					$data = strtr($data, array(\'<br />\' => \'\'));
 					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
 						$data = \'http://\' . $data;
+
+					// Get the short url
+					$yourls = new Yourls($data);
+					$data = $yourls->getUrlInfo(\'shorturl\');
 				'),
 			);
 
-
 		$codes[] = array(
-				'tag' => 'url',
+				'tag' => $tag,
 				'type' => 'unparsed_equals',
 				'before' => '<a href="$1" class="bbc_link" target="_blank">',
 				'after' => '</a>',
 				'validate' => create_function('&$tag, &$data, $disabled', '
 					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
 						$data = \'http://\' . $data;
+
+					// Get the short url
+					$yourls = new Yourls($data);
+					$data = $yourls->getUrlInfo(\'shorturl\');
 				'),
 				'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
 				'disabled_after' => ' ($1)',
@@ -267,16 +274,22 @@ class Yourls
 	{
 		global $txt, $modSettings;
 
-		loadLanguage('OharaYTEmbed');
+		if (empty($modSettings['Yourls_settingsEnableBBC']))
+			return;
+
+		loadLanguage('Yourls');
+
+		/* Set the tag */
+		$tag = !empty($modSettings['Yourls_BBCtag']) ? trim($modSettings['Yourls_BBCtag']) : 'yourls';
 
 		if (empty($modSettings['OYTE_master']))
 			return;
 
 			$buttons[count($buttons) - 1][] = array(
 				'image' => 'yourls',
-				'code' => 'yourls',
-				'before' => '[yourls]',
-				'after' => '[/yourls]',
+				'code' => $tag,
+				'before' => '['. $tag .']',
+				'after' => '['. $tag .']',
 				'description' => 'yourls',
 			);
 	}
