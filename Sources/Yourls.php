@@ -348,7 +348,7 @@ class Yourls
 		$url = $scripturl . '?topic='. $topicOptions['id'] .'.0';
 
 		/* Actually create the short url */
-		self::createTopicShort($url, $topicID);
+		self::createTopicShort($url, $topicOptions['id']);
 	}
 
 	static function createTopicShort($url, $topicID);
@@ -368,6 +368,7 @@ class Yourls
 		/* Do this if the server is responding */
 		if ($check = 200)
 		{
+			/* Get the short url from the external server */
 			$shortUrl = $yourls->getUrlInfo('shorturl');
 
 			/* Update the DB with the brand new short url */
@@ -380,6 +381,13 @@ class Yourls
 					'yourls' => $shortUrl,
 				)
 			);
+
+			/* Be nice and return the short url for others to use it */
+			return $shortUrl;
 		}
+
+		/* Something went wrong, try some other time */
+		else
+			return false;
 	}
 }
