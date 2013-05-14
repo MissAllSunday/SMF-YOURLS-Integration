@@ -24,7 +24,13 @@ Created by [url=http://missallsunday.com]Suki[/url]
 
 [size=12pt][color=purple]Introduction[/color][/size]
 
-This mod allows you to use your YOURLS domain to add a short ulr version of all topics on your forum, it also creates a new BBC for users to be able to create short urls from any message.
+This mod allows you to use your YOURLS domain to add a short url version of all topics on your forum, it also creates a new BBC for users to be able to create short urls from any message.
+
+This mod will add a short url version on topic creation, if a topic doesn't have any short url yet, it will create it and store it on the fly.
+Keeps a column on topics table for minimizing the calls on YOURLS server.
+
+Has separate master settings for the BBC and the topic url shortening, you can disable either without affecting the other.
+Uses SMF hooks wherever possible to avoid file edits.
 
 [size=12pt][color=purple]Supported Languages[/color][/size]
 
