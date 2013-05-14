@@ -347,6 +347,18 @@ class Yourls
 		/* Set a nice url */
 		$url = $scripturl . '?topic='. $topicOptions['id'] .'.0';
 
+		/* Actually create the short url */
+		self::createTopicShort($url, $topicID);
+	}
+
+	static function createTopicShort($url, $topicID);
+	{
+		global $smcFunc;
+
+		/* do not waste my time.. */
+		if (empty($url) || empty($topicID))
+			return false;
+
 		/* Got everything we need, time to instantiate yourself... */
 		$yourls = new self($url);
 
