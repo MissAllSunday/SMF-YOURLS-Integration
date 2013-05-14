@@ -331,4 +331,43 @@ class Yourls
 			'description' => $txt['Yourls_bbcDesc'],
 		);
 	}
+
+	static function createShort(&$msgOptions, &$topicOptions, &$posterOptions)
+	{
+		global $modSettings, $scripturl, $smcFunc;
+
+		/* Can't do much if the mod is not enable */
+		if (empty($modSettings['Yourls_settingsEnable']))
+			return;
+
+		/* This should never happen but just to be sure... */
+		if (empty($topicOptions['id']))
+			return;
+
+		/* Set a nice url */
+		$url = $scripturl . '?topic='. $topicOptions['id'] .'.0';
+
+		/* Got everything we need, time to instantiate yourself... */
+		$yourls = new self($url);
+
+		/* Check the server */
+		$check = $yourls->checkAPIStatus();
+
+		/* Do this if the server is responding */
+		if ($check = 200)
+		{
+			$shortUrl = $yourls->getUrlInfo('shorturl');
+
+			/* Update the DB with the brand new short url */
+			$smcFunc['db_query']('', '
+				UPDATE {db_prefix}topics
+				SET yourls = {string:yourls}
+				WHERE id_topic = {int:id_topic}',
+				array(
+					'id_topic' => $topicOptions['id'],
+					'yourls' => $shortUrl,
+				)
+			);
+		}
+	}
 }
