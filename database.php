@@ -31,6 +31,27 @@ if (file_exists(dirname(__FILE__) . '/SSI.php') && !defined('SMF'))
 elseif (!defined('SMF'))
 	exit('<b>Error:</b> Cannot install - please verify you put this in the same place as SMF\'s index.php.');
 
+/* Get on the guest list... she is! (very elitists but still a catchy song :P) */
+if ((SMF == 'SSI') && !$user_info['is_admin'])
+	die('Admin priveleges required.');
+
+/* Sorry, this mod needs PHP 5.2 */
+YourlsCheck();
+
+/* All well, add the fancy new column */
+$smcFunc['db_add_column'](
+	'{db_prefix}topics',
+	array(
+		'name' => 'yourls',
+		'type' => 'varchar',
+		'size' => 255,
+		'default' => '',
+	),
+	array(),
+	'update',
+	null
+);
+
 function YourlsCheck()
 {
 	if (version_compare(PHP_VERSION, '5.2.0', '<'))
