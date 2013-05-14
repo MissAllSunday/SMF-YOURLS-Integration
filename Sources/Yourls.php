@@ -28,18 +28,102 @@
 if (!defined('SMF'))
 	die('No direct access');
 
+/**
+* class Yourls
+*
+* Used to connect with a YOURLS server using YOURLS API
+*
+* @version 1.0
+* @author Suki <suki@missallsunday.com>
+*/
 class Yourls
 {
+	/**
+	* Public name to identify the mod inside SMF
+	* @access public
+	* @var string
+	*/
 	public $name = 'Yourls';
+
+
+	/**
+	* The user name to connect to the YOURLs API, this would be filled by an admin from the admin panel making it a string
+	* @access protected
+	* @var boolean
+	*/
 	protected $_user = false;
+
+
+	/**
+	* The password used to connect with the API, this would be filled by an admin from the admin panel making it a string
+	* @access protected
+	* @var boolean
+	*/
 	protected $_pass = false;
+
+
+	/**
+	* Domain where the YOURLS API should reside, this would be filled in the admin panel making it a string
+	* @access public
+	* @var boolean
+	*/
 	public $domain = false;
+
+	/**
+	* Holds the raw data that was received by the API, gets set by Yourls::fetch_web_data()
+	* @access protected
+	* @see Yourls::fetch_web_data()
+	* @var array
+	*/
 	protected $_rawData = array();
+
+
+	/**
+	* Sets te url to connect to the API, uses property Yourls::$domain
+	* @access public
+	* @see Yourls::$domain
+	* @var string
+	*/
 	public $apiUrl = '';
+
+
+	/**
+	* The action the API will perform, by default it get set to "shorturl"
+	* @access public
+	* @var string
+	*/
 	public $apiAction = 'shorturl';
+
+
+	/**
+	* An array that collects any possible error that might be produced during the interaction with the API.
+	* @access public
+	* @var array
+	*/
 	public $errors = array();
+
+
+	/**
+	* Possible info options to interact with the API.
+	*
+	* There might be more but this mod only uses the followig and check the input against this array
+	* to make sure we are sending valid params to the API
+	* @access protected
+	* @var array
+	*/
 	protected $_infoOptions = array('status', 'code', 'url', 'message', 'title', 'shorturl', 'statusCode',);
 
+	/**
+	* Instantiates the class
+	*
+	* Takes an url parameter and define some other properties used across the class
+	* @access public
+	* @param string $url The url to be converted
+	* @see Yourls::$_user
+	* @see Yourls::$_pass
+	* @see Yourls::$domain
+	* @return void
+	*/
 	public function __construct($url)
 	{
 		global $modSettings;
@@ -56,6 +140,15 @@ class Yourls
 		$this->setDomain();
 	}
 
+	/**
+	* Sets a correct url for connecting to the API, sets Yourls::$apiUrl
+	*
+	* Checks the user submitted data for a valid url then append the API file name
+	* @access protected
+	* @param string $url The url to be converted
+	* @see Yourls::$domain
+	* @return void
+	*/
 	protected function setDomain()
 	{
 		global $modSettings;
@@ -73,6 +166,13 @@ class Yourls
 			$this->errors[] = 'emptyDomain';
 	}
 
+	/**
+	* A method for handling al possible errors, unfinished
+	*
+	* @access protected
+	* @param string $action What would the method do, fire an error page or just log the error
+	* @return void
+	*/
 	protected function handleErrors($action)
 	{
 		global $txt;
@@ -90,7 +190,8 @@ class Yourls
 	 * Tries to fetch the content of a given url, puts the result in a protected property Yourls::_rawData
 	 *
 	 * @access protected
-	 * @return void
+	 * @see Yourls::_rawData
+	 * @return mixed either string or boolean false on error. The data that was received from the API
 	 */
 	protected function fetch_web_data()
 	{
@@ -173,6 +274,13 @@ class Yourls
 		return 'url' == $info ? get_object_vars($this->data->$info) : $this->data->$info;
 	}
 
+	/**
+	 * Returns All the info feched by processData()
+	 *
+	 * @access public
+	 * @see  Yourls::processData()
+	 * @return mixed either an object or a boolean false if there was an error during fetching
+	 */
 	public function getAllInfo()
 	{
 		// Set the API action
@@ -196,8 +304,9 @@ class Yourls
 	 * Generic method to get info
 	 *
 	 * @access public
+	 * @see  Yourls::processData()
 	 * @param string $apiAction the action that will be performed
-	 * @return mixed if param "url" is used, the method will return an array, for all the rest is a string
+	 * @return mixed either the desire object info or a boolean false
 	 */
 	public function get($apiAction)
 	{
@@ -217,6 +326,16 @@ class Yourls
 		return $this->data;
 	}
 
+	/**
+	 * Check the Status of the YOURLS API
+	 *
+	 * Check the server and gets the status code, then the status gets stored in a cache entry
+	 * if the status is a bad one, it disables the entire mod and then logs the error for the admin to see it
+	 * @access public
+	 * @param string $url the url to check, if empty it will use Yourls::$domain property
+	 * @see  Yourls::$domain
+	 * @return integer the status code for the given url
+	 */
 	public function checkAPIStatus($url = false)
 	{
 		global $txt;
@@ -226,10 +345,10 @@ class Yourls
 
 		$toCheck = !empty($url) ? $url : $this->domain;
 
-		/* Lets see if the cache has something */
+		// Lets see if the cache has something
 		if ($return = cache_get_data('yourls_response', 120) == null)
 		{
-			/* Check the server */
+			 // Check the server 
 			$ch = curl_init($toCheck);
 			curl_setopt($ch, CURLOPT_NOBODY, true);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -240,33 +359,41 @@ class Yourls
 			if (200 == $retcode || 302 == $retcode)
 				$return = 200;
 
-			/* There is an issue, disable the mod and tell the admin */
+			// There is an issue, disable the mod and tell the admin
 			else
 			{
 				$return = false;
 
-				/* Disable both features at once */
+				// Disable both features at once
 				updateSettings(array('Yourls_settingsEnable' => 0, 'Yourls_settingsEnableBBC' => 0), true);
 
-				/* Tell the admin about it */
+				// Tell the admin about it
 				log_error($txt['Yourls_error_server_error']);
 			}
 
-			/* Store the response */
+			// Store the response
 			cache_put_data('yourls_response', $return, 120);
 		}
 
 		return $return;
 	}
 
-	static function bbCode(&$codes)
+	/**
+	 * Creates the code for the BBC tag
+	 *
+	 * Uses hooks, creates a tag for SMF to handle it
+	 * @access public
+	 * @param array $codes the entire array that SMF uses to create the tags
+	 * @return void
+	 */
+	public static function bbCode(&$codes)
 	{
 		global $modSettings;
 
 		if (empty($modSettings['Yourls_settingsEnableBBC']))
 			return;
 
-		/* Set the tag */
+		// Set the tag
 		$tag = !empty($modSettings['Yourls_BBCtag']) ? trim($modSettings['Yourls_BBCtag']) : 'yourls';
 
 		$codes[] = array(
@@ -310,7 +437,14 @@ class Yourls
 			);
 	}
 
-	/* The bbc button */
+	/**
+	 * Creates the code for the BBC image tag
+	 *
+	 * Uses hooks, creates a simple array key for the SMF editor to create a proper button for the tag
+	 * @access public
+	 * @param array $buttons the entire array that SMF uses to create the buttons
+	 * @return void
+	 */
 	static function bbcButton(&$buttons)
 	{
 		global $txt, $modSettings;
@@ -320,7 +454,7 @@ class Yourls
 
 		loadLanguage('Yourls');
 
-		/* Set the tag */
+		// Set the tag
 		$tag = !empty($modSettings['Yourls_BBCtag']) ? trim($modSettings['Yourls_BBCtag']) : 'yourls';
 
 		$buttons[count($buttons) - 1][] = array(
@@ -332,46 +466,64 @@ class Yourls
 		);
 	}
 
-	static function createShort($msgOptions, $topicOptions, $posterOptions)
+	/**
+	 * Creates a short url for a new topic
+	 *
+	 * Called by integrate_create_topic hook, it creates a new short url when a new topic is created
+	 * @access public
+	 * @param array $msgOptions some message params not needed by this method
+	 * @param array $posterOptions info about the topic poster, not needed by this method
+	 * @param array $topicOptions an array containing the topic info, we need the topic ID which is stored on $topicOptions['id']
+	 * @return void
+	 */
+	public static function createShort($msgOptions, $topicOptions, $posterOptions)
 	{
 		global $modSettings, $scripturl, $smcFunc;
 
-		/* Can't do much if the mod is not enable */
+		// Can't do much if the mod is not enable
 		if (empty($modSettings['Yourls_settingsEnable']))
 			return;
 
-		/* This should never happen but just to be sure... */
+		// This should never happen but just to be sure...
 		if (empty($topicOptions['id']))
 			return;
 
-		/* Set a nice url */
+		// Set a nice url
 		$url = $scripturl . '?topic='. $topicOptions['id'] .'.0';
 
-		/* Actually create the short url */
+		// Actually create the short url
 		self::createTopicShort($url, $topicOptions['id']);
 	}
 
-	static function createTopicShort($url, $topicID)
+	/**
+	 * Generic method to create urls from topic urls
+	 *
+	 * Needs a valid topic urls and a topic ID, stores the short url on the topics table
+	 * @access public
+	 * @param array $buttons the entire array that SMF uses to create the buttons
+	 * @return string the shorted url
+	 */
+	public static function createTopicShort($url, $topicID)
 	{
 		global $smcFunc;
 
-		/* do not waste my time.. */
+		// Do not waste my time...
 		if (empty($url) || empty($topicID))
 			return false;
 
-		/* Got everything we need, time to instantiate yourself... */
+		// Got everything we need, time to instantiate yourself...
 		$yourls = new self($url);
 
-		/* Check the server */
+		// Check the server
 		$check = $yourls->checkAPIStatus();
 
-		/* Do this if the server is responding */
+		// Do this if the server is responding
 		if ($check = 200)
 		{
-			/* Get the short url from the external server */
+			// Get the short url from the external server
 			$shortUrl = $yourls->getUrlInfo('shorturl');
 
-			/* Update the DB with the brand new short url */
+			// Update the DB with the brand new short url
 			$smcFunc['db_query']('', '
 				UPDATE {db_prefix}topics
 				SET yourls = {string:yourls}
@@ -382,11 +534,11 @@ class Yourls
 				)
 			);
 
-			/* Be nice and return the short url for others to use it */
+			// Be nice and return the short url for others to use it
 			return $shortUrl;
 		}
 
-		/* Something went wrong, try some other time */
+		// Something went wrong, try some other time
 		else
 			return false;
 	}
