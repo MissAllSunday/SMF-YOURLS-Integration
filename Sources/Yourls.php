@@ -332,7 +332,7 @@ class Yourls
 		);
 	}
 
-	static function createShort(&$msgOptions, &$topicOptions, &$posterOptions)
+	static function createShort($msgOptions, $topicOptions, $posterOptions)
 	{
 		global $modSettings, $scripturl, $smcFunc;
 

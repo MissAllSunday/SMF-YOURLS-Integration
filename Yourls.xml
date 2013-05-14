@@ -15,8 +15,11 @@
 			<add><![CDATA[$context['topic_last_message'] = $topicinfo['id_last_msg'];
 
 	// Yourls integration
-	if (!empty($modSettings['Yourls_settingsEnable'])
+	if (!empty($modSettings['Yourls_settingsEnable']))
 	{
+		if (!isset($txt['Yourls_title_main']))
+			loadLanguage('Yourls');
+
 		/* Pass the short url to the template */
 		$context['topic_yourls'] = $topicinfo['yourls'];
 
