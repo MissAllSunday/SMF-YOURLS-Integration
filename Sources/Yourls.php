@@ -351,7 +351,7 @@ class Yourls
 		self::createTopicShort($url, $topicOptions['id']);
 	}
 
-	static function createTopicShort($url, $topicID);
+	static function createTopicShort($url, $topicID)
 	{
 		global $smcFunc;
 
@@ -377,7 +377,7 @@ class Yourls
 				SET yourls = {string:yourls}
 				WHERE id_topic = {int:id_topic}',
 				array(
-					'id_topic' => $topicOptions['id'],
+					'id_topic' => $topicID,
 					'yourls' => $shortUrl,
 				)
 			);

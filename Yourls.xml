@@ -15,11 +15,15 @@
 			<add><![CDATA[$context['topic_last_message'] = $topicinfo['id_last_msg'];
 
 	// Yourls integration
-	$context['topic_yourls'] = $topicinfo['yourls'];
+	if (!empty($modSettings['Yourls_settingsEnable'])
+	{
+		/* Pass the short url to the template */
+		$context['topic_yourls'] = $topicinfo['yourls'];
 
-	// If this is somewhow empty, create the url
-	if (empty($context['topic_yourls']))
-		$context['topic_yourls'] = Yourls::createTopicShort($scripturl . '?topic='. $topic .'.0', $topic);
+		// If this is somewhow empty, create the url
+		if (empty($context['topic_yourls']))
+			$context['topic_yourls'] = Yourls::createTopicShort($scripturl . '?topic='. $topic .'.0', $topic);
+	}
 	// Yourls integration]]></add>
 		</operation>
 	</file>
