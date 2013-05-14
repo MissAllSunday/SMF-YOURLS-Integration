@@ -38,6 +38,9 @@ if ((SMF == 'SSI') && !$user_info['is_admin'])
 /* Sorry, this mod needs PHP 5.2 */
 YourlsCheck();
 
+/* We need this bit */
+db_extend('packages');
+
 /* All well, add the fancy new column */
 $smcFunc['db_add_column'](
 	'{db_prefix}topics',
