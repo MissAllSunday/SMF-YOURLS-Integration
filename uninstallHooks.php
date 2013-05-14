@@ -39,6 +39,7 @@ $hooks = array(
 	'integrate_modify_modifications' => 'Yourls_settings',
 	'integrate_admin_areas' => 'Yourls_admin',
 	'integrate_load_permissions' => 'Yourls_permissions',
+	'integrate_create_topic' => 'Yourls::createShort',
 );
 
 foreach ($hooks as $hook => $function)
