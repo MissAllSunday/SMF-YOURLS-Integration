@@ -8,7 +8,7 @@
 
 	<install for="2.0 - 2.0.99">
 		<readme parsebbc="true">readme.txt</readme>
-		<database>check.php</database>
+		<database>database.php</database>
 		<code>installHooks.php</code>
 		<modification type="file" format="xml">Yourls.xml</modification>
 		<require-dir name="Themes" destination="$boarddir">Theme and Language files</require-dir>
@@ -19,6 +19,7 @@
 
 	<uninstall for="2.0 - 2.0.99">
 		<code>uninstallHooks.php</code>
+		<database>database.php</database>
 		<modification type="file" format="xml" reverse="true">Yourls.xml</modification>
 		<remove-file name="$sourcedir/Yourls.php" />
 		<remove-file name="$languagedir/Yourls.english.php" />
