@@ -7,18 +7,13 @@
 	<type>modification</type>
 	<file name="$sourcedir/Display.php">
 		<operation>
-			<search position="replace"><![CDATA[// Load the proper template and/or sub template.]]></search>
-			<add><![CDATA[// Yourls integration
-	loadLanguage('Yourls');
-	$context['yourls'] = false;
-	$yourls = new Yourls($scripturl . '?topic=' . $topic);
-	$check = $yourls->checkAPIStatus();
-
-	if ($check = 200)
-		$context['yourls'] = $yourls->getUrlInfo('shorturl');
-	// Yourls integration
-
-	// Load the proper template and/or sub template.]]></add>
+			<search position="replace"><![CDATA[t.num_replies, t.num_views, t.locked, ms.subject, t.is_sticky, t.id_poll,]]></search>
+			<add><![CDATA[t.num_replies, t.num_views, t.locked, ms.subject, t.is_sticky, t.id_poll, t.yourls,]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['topic_last_message'] = $topicinfo['id_last_msg'];]]></search>
+			<add><![CDATA[$context['topic_last_message'] = $topicinfo['id_last_msg'];
+	$context['topic_yourls'] = $topicinfo['yourls'];]]></add>
 		</operation>
 	</file>
 
