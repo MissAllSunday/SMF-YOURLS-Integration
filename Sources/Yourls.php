@@ -575,26 +575,28 @@ class Yourls
 		// Encode the url
 		$url = urlencode($url);
 
-		// At least one should be enabled to show the this
+		// At least one should be enabled to show this
 		foreach (Yourls::$sites as $site)
 			if (!empty($modSettings['Yourls_shareOn_'. $site['name']]))
 				$enable = true;
 
 		if (true == $enable)
 		{
-			$return .= '<dl id="post_header">
-						<dt>
-							<span id="caption_subject">'. $txt['Yourls_shareShortUrl'] .'</span>
-						</dt>
-						<dd>';
+			$return .= '
+						<dl id="post_header">
+							<dt>
+								<span id="caption_subject">'. $txt['Yourls_shareShortUrl'] .'</span>
+							</dt>
+							<dd>';
 
 			// Construct the buttons if enable
 			foreach (Yourls::$sites as $site)
 				if (!empty($modSettings['Yourls_shareOn_'. $site['name']]))
 						$return .='<a href="'. sprintf($site['url'], $url) .'" target="_blank" style="margin:2px;" title="'. $txt['Yourls_shareOn'] . $site['name'] .'"><img src="'. $settings['default_theme_url'] .'/images/yourls/'. $site['name'] .'-'. (!empty($modSettings['Yourls_settingsIconSize']) ? $modSettings['Yourls_settingsIconSize'] : '16') .'.png"  alt="'. $txt['Yourls_shareOn'] . $site['name'] .'" /></a>';
 
-			$return .='</dd>
-					</dl>';
+			$return .='
+							</dd>
+						</dl>';
 		}
 
 		return $return;
