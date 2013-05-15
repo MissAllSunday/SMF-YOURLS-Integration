@@ -348,7 +348,7 @@ class Yourls
 		// Lets see if the cache has something
 		if ($return = cache_get_data('yourls_response', 120) == null)
 		{
-			 // Check the server 
+			 // Check the server
 			$ch = curl_init($toCheck);
 			curl_setopt($ch, CURLOPT_NOBODY, true);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
