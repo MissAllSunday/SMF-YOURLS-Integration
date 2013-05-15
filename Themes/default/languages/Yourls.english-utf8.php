@@ -39,12 +39,18 @@ $txt['Yourls_settingsDomain'] = 'Yourls domain';
 $txt['Yourls_settingsDomain_sub'] = 'The domain where the yourls script is located';
 $txt['Yourls_settingsEnable'] = 'Enable the Yourls integration mod';
 $txt['Yourls_settingsEnable_sub'] = 'This setting needs to be enable for the integration to work';
-$txt['Yourls_settingsDesc'] = 'From here you can configure the SMF - YOURLS integration. <br /> Keep in mind that this mod uses a third party script and sometimes there could be lags as it depends on an external server response, the mod performs a check every 2 minutes to make sure the external server is up and running, if not, the mod would be disable and an error log will be filled to prevent any downtime in your forum.';
+$txt['Yourls_settingsDesc'] = 'From here you can configure the SMF - YOURLS integration. <br /> Keep in mind that this mod uses a third party script and sometimes there could be lags as it depends on an external server response, the mod performs a check every two minutes to make sure the external server is up and running, if not, the mod would be disable and an error log will be filled to prevent any downtime in your forum.';
 $txt['Yourls_shortUrl'] = 'Short Url ';
 $txt['Yourls_shortUrlForTopic'] = 'Short url for this topic:';
 $txt['Yourls_BBCtag'] = 'The tag for the BBC';
 $txt['Yourls_BBCtag_sub'] = 'Be careful to not change this setting veru often as it will result in broken BBC code.<br />If you do not provide a custom tag, "yourls" would be used.';
 $txt['Yourls_bbcDesc'] = 'Use this BBC to create a short version of any url';
+$txt['Yourls_settingsIconSize'] = 'The size for the icons';
+$txt['Yourls_settingsIconSize_sub'] = 'There are four predefined sizes, all icons will have the same size.';
+$txt['Yourls_settingsIcon16'] = '16';
+$txt['Yourls_settingsIcon24'] = '24';
+$txt['Yourls_settingsIcon32'] = '32';
+$txt['Yourls_settingsIcon48'] = '48';
 
 // Error strings
 $txt['Yourls_error_noUrl'] = 'No url was provided';

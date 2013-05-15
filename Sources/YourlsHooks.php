@@ -58,6 +58,15 @@ function Yourls_postSettings($return_config = false)
 		array('text', 'Yourls_settingsPass', 'subtext' => $txt['Yourls_settingsPass_sub']),
 		array('check', 'Yourls_settingsEnableBBC', 'subtext' => $txt['Yourls_settingsEnableBBC_sub']),
 		array('text', 'Yourls_BBCtag', 'subtext' => $txt['Yourls_BBCtag_sub']),
+		array( 'select', 'Yourls_settingsIconSize',
+			array(
+				'16' => $txt['Yourls_settingsIcon16'],
+				'24' => $txt['Yourls_settingsIcon24'],
+				'32' => $txt['Yourls_settingsIcon32'],
+				'48' => $txt['Yourls_settingsIcon48'],
+			),
+			'subtext' => $txt['Yourls_settingsIconSize_sub']
+		),
 	);
 
 	if ($return_config)

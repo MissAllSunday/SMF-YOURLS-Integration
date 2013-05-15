@@ -45,6 +45,12 @@ $txt['Yourls_shortUrlForTopic'] = 'URL corta para este tema:';
 $txt['Yourls_BBCtag'] = 'El tag para el BBC';
 $txt['Yourls_BBCtag_sub'] = 'Ten cuidado y no cambies muy seguido esta opción o puedes terminar con BBC rotos.';
 $txt['Yourls_bbcDesc'] = 'Usa este BBC para crear una url más corta de cualquier dirección válida.';
+$txt['Yourls_settingsIconSize'] = 'El tamaño de los íconos';
+$txt['Yourls_settingsIconSize_sub'] = 'Hay cuatro tamaños predefinidos, todos los íconos tendrán el mismo tamaño.';
+$txt['Yourls_settingsIcon16'] = '16';
+$txt['Yourls_settingsIcon24'] = '24';
+$txt['Yourls_settingsIcon32'] = '32';
+$txt['Yourls_settingsIcon48'] = '48';
 
 // Error strings
 $txt['Yourls_error_noUrl'] = 'Ninguna dirección fué provista';
