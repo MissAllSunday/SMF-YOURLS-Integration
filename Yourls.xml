@@ -51,6 +51,7 @@
 								<input type="text" name="yourlsShort" size="55" tabindex="1" maxlength="255" onclick="this.select();" value="', $context['topic_yourls'] ,'" class="input_text" readonly/>
 							</dd>
 						</dl>
+						', Yourls::shareIcons($context['topic_yourls']) ,'
 					</div>
 				<span class="botslice"><span></span></span>
 				</div>
