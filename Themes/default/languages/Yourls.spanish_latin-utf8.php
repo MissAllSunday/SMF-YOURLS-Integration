@@ -52,6 +52,11 @@ $txt['Yourls_settingsIcon24'] = '24';
 $txt['Yourls_settingsIcon32'] = '32';
 $txt['Yourls_settingsIcon48'] = '48';
 $txt['Yourls_shareShortUrl'] = 'Comparte este tema';
+$txt['Yourls_shareOn_facebook'] = 'Activar share on facebook';
+$txt['Yourls_shareOn_linkedin'] = 'Activar share on linkedin';
+$txt['Yourls_shareOn_twitter'] = 'Activarshare on twitter';
+$txt['Yourls_shareOn_google'] = 'Activar share on google';
+$txt['Yourls_shareOn'] = 'Comparte en '; 
 
 // Error strings
 $txt['Yourls_error_noUrl'] = 'Ninguna dirección fué provista';

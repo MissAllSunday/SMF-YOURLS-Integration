@@ -45,6 +45,24 @@ class Yourls
 	*/
 	public $name = 'Yourls';
 
+	public static $sites = array(
+			'linkedin' => array(
+				'name' => 'linkedin',
+				'url' => 'http://www.linkedin.com/shareArticle?mini=true&url=%s',
+			),
+			'google' => array(
+				'name' => 'google',
+				'url' => 'https://plus.google.com/share?url=%s',
+			),
+			'facebook' => array(
+				'name' => 'facebook',
+				'url' => 'http://www.facebook.com/sharer/sharer.php?u=%s',
+			),
+			'twitter' => array(
+				'name' => 'twitter',
+				'url' => 'http://www.twitter.com/share?url=%s',
+			),
+		);
 
 	/**
 	* The user name to connect to the YOURLs API, this would be filled by an admin from the admin panel making it a string
@@ -545,33 +563,22 @@ class Yourls
 
 	public function shareIcons($url)
 	{
-		global $modSettings, $settings;
+		global $modSettings, $settings, $txt;
 
 		if (empty($url))
-			return false,
+			return false;
 
 		$url = urlencode($url);
 
-		$sites = array(
-			'linkedin' => array(
-				'name' => 'linkedin',
-				'url' => 'http://www.linkedin.com/shareArticle?mini=true&url=%s',
-			),
-			'google' => array(
-				'name' => 'google',
-				'url' => 'https://plus.google.com/share?url=%s',
-			),
-			'facebook' => array(
-				'name' => 'facebook',
-				'url' => 'http://www.facebook.com/sharer/sharer.php?u=%s',
-			),
-			'twitter' => array(
-				'name' => 'twitter',
-				'url' => 'http://www.twitter.com/share?url=%s',
-			),
-		);
+		$return = '<span>';
 
+		// Construct the buttons if enable
+		foreach (Yourls::$sites as $site)
+			if (!empty($modSettings['Yourls_shareOn_'. $site['name']]))
+					$return .='<a href="'. sprintf($site['url'], $url) .'" target="_blank" style="margin:2px;" title="'. $txt['Yourls_shareOn'] . $site['name'] .'"><img src="'. $settings['default_theme_url'] .'/images/yourls/'. $site['name'] .'-'. (!empty($modSettings['Yourls_settingsIconSize']) ? $modSettings['Yourls_settingsIconSize'] : '16') .'.png"  alt="'. $txt['Yourls_shareOn'] . $site['name'] .'" /></a>';
 
-		echo '<a href="', $context['topic_yourls'] ,'" target="_blank"><img src="', $settings['default_theme_url'] ,'/images/yourls/facebook-', (!empty($modSettings['Yourls_settingsIconSize']) ? $modSettings['Yourls_settingsIconSize'] : '16') ,'.png" /></a>';
+		$return .='</span>';
+
+		return $return;
 	}
 }

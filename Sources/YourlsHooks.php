@@ -69,6 +69,10 @@ function Yourls_postSettings($return_config = false)
 		),
 	);
 
+	/* Append all the settings for social buttons */
+	foreach (Yourls::$sites as $site)
+		$config_vars[] = array('check', 'Yourls_shareOn_'. $site['name']);
+
 	if ($return_config)
 		return $config_vars;
 

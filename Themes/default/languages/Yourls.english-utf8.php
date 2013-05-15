@@ -52,6 +52,12 @@ $txt['Yourls_settingsIcon24'] = '24';
 $txt['Yourls_settingsIcon32'] = '32';
 $txt['Yourls_settingsIcon48'] = '48';
 $txt['Yourls_shareShortUrl'] = 'Share this topic';
+$txt['Yourls_shareShortUrl'] = 'Share this topic:';
+$txt['Yourls_shareOn_facebook'] = 'Enable share on facebook';
+$txt['Yourls_shareOn_linkedin'] = 'Enable share on linkedin';
+$txt['Yourls_shareOn_twitter'] = 'Enable share on twitter';
+$txt['Yourls_shareOn_google'] = 'Enable share on google';
+$txt['Yourls_shareOn'] = 'Share on '; 
 
 // Error strings
 $txt['Yourls_error_noUrl'] = 'No url was provided';
