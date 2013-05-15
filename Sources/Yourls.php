@@ -542,4 +542,36 @@ class Yourls
 		else
 			return false;
 	}
+
+	public function shareIcons($url)
+	{
+		global $modSettings, $settings;
+
+		if (empty($url))
+			return false,
+
+		$url = urlencode($url);
+
+		$sites = array(
+			'linkedin' => array(
+				'name' => 'linkedin',
+				'url' => 'http://www.linkedin.com/shareArticle?mini=true&url=%s',
+			),
+			'google' => array(
+				'name' => 'google',
+				'url' => 'https://plus.google.com/share?url=%s',
+			),
+			'facebook' => array(
+				'name' => 'facebook',
+				'url' => 'http://www.facebook.com/sharer/sharer.php?u=%s',
+			),
+			'twitter' => array(
+				'name' => 'twitter',
+				'url' => 'http://www.twitter.com/share?url=%s',
+			),
+		);
+
+
+		echo '<a href="', $context['topic_yourls'] ,'" target="_blank"><img src="', $settings['default_theme_url'] ,'/images/yourls/facebook-', (!empty($modSettings['Yourls_settingsIconSize']) ? $modSettings['Yourls_settingsIconSize'] : '16') ,'.png" /></a>';
+	}
 }

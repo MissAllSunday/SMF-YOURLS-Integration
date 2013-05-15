@@ -51,6 +51,7 @@ $txt['Yourls_settingsIcon16'] = '16';
 $txt['Yourls_settingsIcon24'] = '24';
 $txt['Yourls_settingsIcon32'] = '32';
 $txt['Yourls_settingsIcon48'] = '48';
+$txt['Yourls_shareShortUrl'] = 'Comparte este tema';
 
 // Error strings
 $txt['Yourls_error_noUrl'] = 'Ninguna dirección fué provista';
